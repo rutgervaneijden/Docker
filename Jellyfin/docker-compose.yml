@@ -1,0 +1,23 @@
+networks:
+  jellyfin:
+    driver: bridge
+    name: jellyfin
+services:
+  jellyfin:
+    container_name: jellyfin
+    environment:
+      #- JELLYFIN_PublishedServerUrl=http://example.com
+    image: jellyfin/jellyfin
+    networks:
+      - jellyfin
+    ports:
+      - 8080:8096
+    restart: unless-stopped
+    user: 1000:1000
+    volumes:
+      - ./cache:/cache
+      - ./config:/config
+      - #read_only=true
+        source=/pool-0/Mediatheek
+        target=/media
+        type=bind
