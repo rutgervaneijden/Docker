@@ -1,0 +1,42 @@
+networks:
+  guacamole:
+    driver: bridge
+    name: guacamole
+services:
+  guacamole:
+    container_name: guacamole
+    depends_on:
+      - guacd
+      - postgres
+    environment:
+      - GUACD_HOSTNAME=guacamole-guacd
+      - POSTGRESQL_DATABASE=guacamole
+      - POSTGRESQL_HOSTNAME=guacamole-postgres
+      - POSTGRESQL_PASSWORD=guacamole
+      - POSTGRESQL_USER=guacamole
+      #- TOTP_ENABLED=true
+    image: guacamole/guacamole
+    networks:
+      - guacamole
+    ports:
+      - 8080:8080
+    restart: unless-stopped
+  guacd:
+    container_name: guacamole-guacd
+    image: guacamole/guacd
+    networks:
+      - guacamole
+    restart: unless-stopped
+  postgres:
+    container_name: guacamole-postgres
+    environment:
+      - POSTGRES_DB=guacamole
+      - POSTGRES_PASSWORD=guacamole
+      - POSTGRES_USER=guacamole
+    image: postgres
+    networks:
+      - guacamole
+    volumes:
+      - ./initdb:/docker-entrypoint-initdb.d
+      - ./postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
