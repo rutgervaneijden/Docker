@@ -36,7 +36,7 @@ services:
     image: postgres
     networks:
       - guacamole
+    restart: unless-stopped
     volumes:
       - ./postgres/initdb:/docker-entrypoint-initdb.d
       - ./postgres/data:/var/lib/postgresql/data
-    restart: unless-stopped
