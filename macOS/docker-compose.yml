@@ -1,0 +1,25 @@
+networks:
+  macos:
+    driver: bridge
+    name: macos
+services:
+  macos:
+    cap_add:
+      - NET_ADMIN
+    container_name: macos
+    devices:
+      - /dev/kvm
+      - /dev/net/tun
+    environment:
+      - VERSION=13
+    image: dockurr/macos
+    networks:
+      - macos
+    ports:
+      - 8006:8006
+      - 5900:5900/tcp
+      - 5900:5900/udp
+    restart: always
+    stop_grace_period: 2m
+    volumes:
+      - ./macos:/storage
