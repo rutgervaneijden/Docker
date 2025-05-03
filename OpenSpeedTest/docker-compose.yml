@@ -1,7 +1,13 @@
+networks:
+  openspeedtest:
+    driver: bridge
+    name: openspeedtest
 services:
   speedtest:
     container_name: openspeedtest
     image: openspeedtest/latest
+    networks:
+      - openspeedtest
     ports:
       - 3000:3000
       #- 3001:3001
