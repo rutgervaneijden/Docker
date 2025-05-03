@@ -1,0 +1,31 @@
+networks:
+  freshrss:
+    driver: bridge
+    name: freshrss
+services:
+  freshrss:
+    container_name: freshrss
+    environment:
+      - CRON_MIN=3,33
+      - TZ=Europe/Amsterdam
+    image: freshrss/freshrss
+    networks:
+      - freshrss
+    ports:
+      - 8080:80
+    restart: unless-stopped
+    volumes:
+      - ./data:/var/www/FreshRSS/data
+      - ./extensions:/var/www/FreshRSS/extensions
+  postgres:
+    container_name: freshrss-postgres
+    environment:
+      - POSTGRES_DB=freshrss
+      - POSTGRES_PASSWORD=freshrss
+      - POSTGRES_USER=freshrss
+    image: postgres
+    networks:
+      - freshrss
+    restart: unless-stopped
+    volumes:
+      - ./postgres/data:/var/lib/postgresql/dat
