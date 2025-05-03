@@ -5,7 +5,7 @@ networks:
 services:
   jellyfin:
     container_name: jellyfin
-    environment:
+    #environment:
       #- JELLYFIN_PublishedServerUrl=http://example.com
     image: jellyfin/jellyfin
     networks:
