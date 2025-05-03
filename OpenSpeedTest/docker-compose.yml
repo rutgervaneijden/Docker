@@ -3,7 +3,7 @@ networks:
     driver: bridge
     name: openspeedtest
 services:
-  speedtest:
+  openspeedtest:
     container_name: openspeedtest
     image: openspeedtest/latest
     networks:
