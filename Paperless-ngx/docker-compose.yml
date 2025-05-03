@@ -1,0 +1,50 @@
+networks:
+  paperless-ngx:
+    driver: bridge
+    name: paperless-ngx
+services:
+  paperless-ngx:
+    container_name: paperless-ngx
+    depends_on:
+      - redis
+      - postgres
+    environment:
+      #- PAPERLESS_CONSUMER_POLLING=5
+      - PAPERLESS_DBHOST=paperless-ngx-postgres
+      #- PAPERLESS_OCR_LANGUAGE=fra
+      - PAPERLESS_OCR_LANGUAGES=nld
+      - PAPERLESS_REDIS=redis://paperless-ngx-redis:6379
+      - PAPERLESS_TIME_ZONE=Europe/Brussels
+      - USERMAP_GID=1000
+      - USERMAP_UID=1000
+    image: ghcr.io/paperless-ngx/paperless-ngx
+    networks:
+      - paperless-ngx
+    ports:
+      - 8080:8000
+    restart: unless-stopped
+    volumes:
+      - ./data:/usr/src/paperless/data
+      - ./media:/usr/src/paperless/media
+      - ./export:/usr/src/paperless/export
+      - ./consume:/usr/src/paperless/consume
+  postgres:
+    container_name: paperless-ngx-postgres
+    environment:
+      - POSTGRES_DB=paperless
+      - POSTGRES_PASSWORD=paperless
+      - POSTGRES_USER=paperless
+    image: docker.io/library/postgres
+    networks:
+      - paperless-ngx
+    restart: unless-stopped
+    volumes:
+      - ./postgres/data:/var/lib/postgresql/data
+  redis:
+    container_name: paperless-ngx-redis
+    image: docker.io/library/redis
+    networks:
+      - paperless-ngx
+    restart: unless-stopped
+    volumes:
+      - ./redis/data:/data
