@@ -1,0 +1,6 @@
+- Start the container and connect to port 8006 using your web browser.
+- Choose Disk Utility and then select the largest Apple Inc. VirtIO Block Media disk.
+- Click the Erase button to format the disk to APFS, and give it any name you like.
+- Close the current window and proceed the installation by clicking Reinstall macOS.
+- When prompted where you want to install it, select the disk you created previously.
+- After all files are copied, select your region, language, and account settings.
