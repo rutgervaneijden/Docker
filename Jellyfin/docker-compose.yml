@@ -17,7 +17,7 @@ services:
     volumes:
       - ./cache:/cache
       - ./config:/config
-      - #read_only=true
-        source=/pool-0/Mediatheek
-        target=/media
-        type=bind
+      - #read_only: true
+        source: /pool-0/Mediatheek
+        target: /media
+        type: /bind
