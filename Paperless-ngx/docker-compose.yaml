@@ -34,7 +34,7 @@ services:
       - POSTGRES_DB=paperless
       - POSTGRES_PASSWORD=paperless
       - POSTGRES_USER=paperless
-    image: docker.io/library/postgres
+    image: postgres
     networks:
       - paperless-ngx
     restart: unless-stopped
@@ -42,7 +42,7 @@ services:
       - ./postgres/data:/var/lib/postgresql/data
   redis:
     container_name: paperless-ngx-redis
-    image: docker.io/library/redis
+    image: redis
     networks:
       - paperless-ngx
     restart: unless-stopped
