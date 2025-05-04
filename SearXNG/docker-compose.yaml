@@ -13,8 +13,6 @@ services:
       - ./redis/data:/data
   searxng:
     container_name: searxng
-    environment:
-      - INSTANCE_NAME=localhost
     image: searxng/searxng
     networks:
       - searxng
