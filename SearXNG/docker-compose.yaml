@@ -1,0 +1,23 @@
+networks:
+  searxng:
+    driver: bridge
+    name: searxng
+services:
+  redis:
+    container_name: searxng-redis
+    image: redis
+    networks:
+      - searxng
+    restart: unless-stopped
+    volumes:
+      - ./redis/data:/data
+  searxng:
+    container_name: searxng
+    image: searxng/searxng
+    networks:
+      - searxng
+    ports:
+      - 8080:8080
+    restart: unless-stopped
+    volumes:
+      - ./searxng:/etc/searxng
