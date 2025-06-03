@@ -1,0 +1,15 @@
+networks:
+  quickshare:
+    driver: bridge
+    name: quickshare
+services:
+  quickshare:
+    container_name: quickshare
+    environment:
+      - DEFAULTADMIN=rutger
+      - DEFAULTADMINPWD=1234
+    image: hexxa/quickshare
+    ports:
+      - 8080:8686
+    volumes:
+      - ./root:/quickshare/root
