@@ -1,0 +1,20 @@
+networks:
+  audiobookshelf:
+    driver: bridge
+    name: audiobookshelf
+services:
+  audiobookshelf:
+    container_name: audiobookshelf
+    environment:
+      - TZ=Europe/Brussels
+    image: ghcr.io/advplyr/audiobookshelf
+    networks:
+      - audiobookshelf
+    ports:
+      - 8080:80
+    restart: unless-stopped
+    volumes:
+      - ./audiobooks:/audiobooks
+      - ./podcasts:/podcasts
+      - ./config:/config
+      - ./metadata:/metadata
