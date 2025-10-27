@@ -14,6 +14,7 @@ services:
       - MYSQL_PASSWORD=nextcloud
       - MYSQL_USER=nextcloud
       - NEXTCLOUD_TRUSTED_DOMAINS=prodesk0
+      - PHP_MEMORY_LIMIT=1024M
       - REDIS_HOST=nextcloud-redis
     image: nextcloud
     networks:
