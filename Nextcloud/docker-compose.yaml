@@ -6,13 +6,15 @@ services:
   nextcloud:
     container_name: nextcloud
     depends_on:
-      - postgres
+      - mariadb
       - redis
     environment:
-      - POSTGRES_DB=nextcloud
-      - POSTGRES_HOST=nextcloud-postgres
-      - POSTGRES_PASSWORD=nextcloud
-      - POSTGRES_USER=nextcloud
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_HOST=nextcloud-mariadb
+      - MYSQL_PASSWORD=nextcloud
+      - MYSQL_USER=nextcloud
+      - NEXTCLOUD_TRUSTED_DOMAINS=prodesk0
+      - REDIS_HOST=nextcloud-redis
     image: nextcloud
     networks:
       - nextcloud
@@ -22,12 +24,14 @@ services:
     volumes:
       - ./html:/var/www/html
   postgres:
-    container_name: nextcloud-postgres
+    command: --transaction-isolation=READ-COMMITTED
+    container_name: nextcloud-mariadb
     environment:
-      - POSTGRES_DB=nextcloud
-      - POSTGRES_PASSWORD=nextcloud
-      - POSTGRES_USER=nextcloud
-    image: postgres
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_PASSWORD=nextcloud
+      - MYSQL_ROOT_PASSWORD=nextcloud
+      - MYSQL_USER=nextcloud
+    image: mariadb:lts
     networks:
       - nextcloud
     restart: unless-stopped
@@ -35,7 +39,7 @@ services:
       - ./postgres/data:/var/lib/postgresql/data
   redis:
     container_name: nextcloud-redis
-    image: redis
+    image: redis:alpine
     networks:
       - nextcloud
     restart: unless-stopped
