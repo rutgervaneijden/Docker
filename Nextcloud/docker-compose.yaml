@@ -23,7 +23,7 @@ services:
       - 8080:80
     restart: unless-stopped
     volumes:
-      - .nextcloud/config:/var/www/html/config
+      - ./nextcloud/config:/var/www/html/config
       - /media/hdd0/Nextcloud/data:/var/www/html/data
   mariadb:
     command: --transaction-isolation=READ-COMMITTED
