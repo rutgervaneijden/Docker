@@ -24,7 +24,7 @@ services:
     restart: unless-stopped
     volumes:
       - ./html:/var/www/html
-  postgres:
+  mariadb:
     command: --transaction-isolation=READ-COMMITTED
     container_name: nextcloud-mariadb
     environment:
