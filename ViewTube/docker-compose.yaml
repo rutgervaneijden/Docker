@@ -1,0 +1,35 @@
+networks:
+  viewtube:
+    driver: bridge
+    name: viewtube
+services:
+  viewtube:
+    container_name: viewtube
+    depends_on:
+      - viewtube-mongo
+      - viewtube-redis
+    environment:
+      - VIEWTUBE_DATABASE_HOST=viewtube-mongo
+      - VIEWTUBE_REDIS_HOST=viewtube-redis
+    image: mauriceo/viewtube
+    networks:
+      - viewtube
+    ports:
+      - 8080:8066
+    restart: unless-stopped
+    volumes:
+      - ./viewtube/data:/data
+  viewtube-mongo:
+    image: mongo
+    networks:
+      - viewtube
+    restart: unless-stopped
+    volumes:
+      - ./db:/data/db
+  viewtube-redis:
+    image: redis
+    networks:
+      - viewtube
+    restart: unless-stopped
+    volumes:
+      - ./redis/data:/data
