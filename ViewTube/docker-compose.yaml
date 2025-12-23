@@ -18,7 +18,7 @@ services:
       - 8080:8066
     restart: unless-stopped
     volumes:
-      - ./viewtube/data:/data
+      - ./data:/data
   viewtube-mongo:
     image: mongo
     networks:
