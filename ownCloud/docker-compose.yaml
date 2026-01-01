@@ -1,0 +1,64 @@
+networks:
+  owncloud:
+    driver: bridge
+    name: owncloud
+services:
+  owncloud:
+    container_name: owncloud
+    depends_on:
+      - mariadb
+      - redis
+    environment:
+      - OWNCLOUD_DOMAIN=localhost:8080
+      - OWNCLOUD_TRUSTED_DOMAINS=localhost
+      - OWNCLOUD_DB_TYPE=mysql
+      - OWNCLOUD_DB_NAME=owncloud
+      - OWNCLOUD_DB_USERNAME=owncloud
+      - OWNCLOUD_DB_PASSWORD=owncloud
+      - OWNCLOUD_DB_HOST=mariadb
+      - OWNCLOUD_ADMIN_USERNAME=rutger
+      - OWNCLOUD_ADMIN_PASSWORD=rutger
+      - OWNCLOUD_MYSQL_UTF8MB4=true
+      - OWNCLOUD_REDIS_ENABLED=true
+      - OWNCLOUD_REDIS_HOST=redis
+    healthcheck:
+      test: ["CMD", "/usr/bin/healthcheck"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    image: owncloud/server
+    ports:
+      - 8080:8080
+    restart: unless-stopped
+    volumes:
+      - ./data:/mnt/data
+  mariadb:
+    command: ["--max-allowed-packet=128M", "--innodb-log-file-size=64M"]
+    container_name: owncloud-mariadb
+    environment:
+      - MYSQL_ROOT_PASSWORD=owncloud
+      - MYSQL_USER=owncloud
+      - MYSQL_PASSWORD=owncloud
+      - MYSQL_DATABASE=owncloud
+      - MARIADB_AUTO_UPGRADE=1
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-u", "root", "--password=owncloud"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    image: mariadb
+    restart: unless-stopped
+    volumes:
+      - ./mysql:/var/lib/mysql
+  redis:
+    command: ["--databases", "1"]
+    container_name: owncloud-redis
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    image: redis
+    restart: unless-stopped
+    volumes:
+      - ./redis:/data
