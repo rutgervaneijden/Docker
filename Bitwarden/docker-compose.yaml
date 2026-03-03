@@ -1,0 +1,37 @@
+networks:
+  bitwarden:
+    driver: bridge
+    name: bitwarden
+services:
+  bitwarden:
+    container_name: bitwarden
+    depends_on:
+      - mysql
+    environment:
+      - BW_DB_PROVIDER=mysql
+      - BW_DB_SERVER=mysql
+      - BW_DB_DATABASE=bitwarden
+      - BW_DB_USERNAME=bitwarden
+      - BW_DB_PASSWORD=bitwarden
+    image: ghcr.io/bitwarden/lite
+    network:
+      - bitwarden
+    ports:
+      - 8081:8080
+    restart: always
+    volumes:
+      - ./bitwarden:/etc/bitwarden
+
+  mysql:
+    container_name: bitwarden-mysql
+    environment:
+      MARIADB_USER: "bitwarden"
+      MARIADB_PASSWORD: "bitwarden"
+      MARIADB_DATABASE: "bitwarden"
+      MARIADB_RANDOM_ROOT_PASSWORD: "true"
+    image: mariadb:10
+    network:
+      - bitwarden
+    restart: always
+    volumes:
+      - ./mysql:/var/lib/mysql
